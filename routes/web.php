@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $finished = DB::select('SELECT * FROM games WHERE finished = ?', [1]);
+    $opened = DB::select('SELECT * FROM games WHERE finished = ?', [0]);
+
+    return view('welcome', ['finished' => $finished, 'opened' => $opened]);
 });
