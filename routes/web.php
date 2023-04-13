@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,10 @@ Route::get('/', function () {
     return view('welcome', ['finished' => $finished, 'opened' => $opened]);
 });
 
+Route::get('login', [AuthController::class, 'index'])->name('login');
+Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post');
+Route::get('registration', [AuthController::class, 'registration'])->name('register');
+Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post');
+Route::get('dashboard', [AuthController::class, 'dashboard']);
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/games', [GameController::class, 'showAll']);
