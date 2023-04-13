@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,5 @@ Route::get('/', function () {
 
     return view('welcome', ['finished' => $finished, 'opened' => $opened]);
 });
+
+Route::get('/games', [GameController::class, 'showAll']);
