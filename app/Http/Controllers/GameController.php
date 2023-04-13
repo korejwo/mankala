@@ -4,10 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class GameController extends Controller
 {
+    public function callAction($method, $parameters)
+    {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+
+        return parent::callAction($method, $parameters);
+    }
     public function showAll(): View
     {
         /** @var Game[] $games */
