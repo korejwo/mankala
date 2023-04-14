@@ -1,13 +1,19 @@
 #!/bin/sh
 
+#sudo groupadd phpusers
+#sudo usermod -a -G phpusers michal
+#sudo usermod -a -G phpusers www-data
+
 if [ ! -d "vendor" ]; then
   export COMPOSER_ALLOW_SUPERUSER=1
   composer install
 fi
 
+chmod 764 bin/chat-server.php
+
 if [ -d "/home/michal" ]; then
-  sudo chown -R www-data.www-data /home/michal/www/mankala/storage
-  sudo chown -R www-data.www-data /home/michal/www/mankala/bootstrap/cache
+  sudo chown -R :phpusers /home/michal/www/mankala/storage
+  sudo chown -R :phpusers /home/michal/www/mankala/bootstrap/cache
 
   if [ ! -f "/etc/nginx/sites-enabled/mankala" ]; then
       sudo ln -s /home/michal/www/mankala/nginx_dev.conf /etc/nginx/sites-enabled/mankala
