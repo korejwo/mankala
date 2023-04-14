@@ -3,20 +3,18 @@
 <head>
     <title>Mankala</title>
     <link rel="stylesheet" href="{{ cdn_link('bootstrap5.css') }}">
-    <script src="{{ cdn_link('live.js') }}"></script>
-    <script src="{{ cdn_link('socket.io.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
-    @yield('scripts')
+    @yield('styles')
 </head>
 <body>
-<div>
-    <section>
-        @include('menu')
-        <div class="mx-auto ms-lg-80">
-            @yield('content')
-        </div>
-    </section>
+@include('menu')
+<div class="mx-auto ms-lg-80">
+    Rendered at: {{ now() }}
+    @yield('content')
 </div>
 
+<script src="{{ cdn_link('socket.io.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+@yield('scripts')
+<script src="{{ cdn_link('live.js') }}#js,css"></script>
 </body>
 </html>

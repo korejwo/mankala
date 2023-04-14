@@ -11,7 +11,7 @@ function connect (host) {
     console.log(socket);
 }
 
-connect('http://192.168.0.126:8080');
+// connect('http://192.168.0.126:8080');
 
 // $(document).ready(function () {
 //     $('#setName').on('click', function () {
