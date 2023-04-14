@@ -1,7 +1,8 @@
 <?php
 
-if (! function_exists('cdn_link')) {
-    function cdn_link($file = '', $version = null, $force_cdn = false) {
+if (!function_exists('cdn_link')) {
+    function cdn_link($file = '', $version = null, $force_cdn = false)
+    {
         $links = [
             'https://cdn.rookgaard.pl/',
             'https://br.rookgaard.pl/',
@@ -23,5 +24,16 @@ if (! function_exists('cdn_link')) {
         }
 
         return $link . $file . ($version ? '?v=' . $version : '');
+    }
+}
+
+if (!function_exists('nav_item')) {
+    function nav_item($route, $label)
+    {
+        return '<li class="nav-item nav-pills">
+                            <a class="nav-link text-white p-3 d-flex align-items-center" href="' . route($route) . '">
+                                <span class="small">' . $label . '</span>
+                            </a>
+                        </li>';
     }
 }

@@ -4,28 +4,12 @@
             <div>
                 <h3 class="mb-2 text-secondary text-uppercase small">Main</h3>
                 <ul class="nav flex-column mb-auto">
-                    <li class="nav-item nav-pills">
-                        <a class="nav-link text-white p-3 d-flex align-items-center" href="{{ route('dashboard') }}">
-                            <span class="small">Dashboard</span>
-                        </a>
-                    </li>
+                    {!! nav_item('dashboard', 'Dashboard') !!}
                     @guest
-                        <li class="nav-item nav-pills">
-                            <a class="nav-link text-white p-3 d-flex align-items-center" href="{{ route('login') }}">
-                                <span class="small">Login</span>
-                            </a>
-                        </li>
-                        <li class="nav-item nav-pills">
-                            <a class="nav-link text-white p-3 d-flex align-items-center" href="{{ route('register') }}">
-                                <span class="small">Register</span>
-                            </a>
-                        </li>
+                        {!! nav_item('login', 'Login') !!}
+                        {!! nav_item('register', 'Register') !!}
                     @else
-                        <li class="nav-item nav-pills">
-                            <a class="nav-link text-white p-3 d-flex align-items-center" href="{{ route('logout') }}">
-                                <span class="small">Logout</span>
-                            </a>
-                        </li>
+                        {!! nav_item('logout', 'Logout') !!}
                     @endguest
                 </ul>
             </div>

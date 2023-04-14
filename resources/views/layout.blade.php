@@ -6,6 +6,7 @@
     <script src="{{ cdn_link('live.js') }}"></script>
     <script src="{{ cdn_link('socket.io.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    @yield('scripts')
 </head>
 <body>
 <div>

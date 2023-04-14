@@ -45,4 +45,9 @@ class GameController extends Controller
             'opened' => $opened,
         ]);
     }
+
+    public function game(): View
+    {
+        return view('game');
+    }
 }

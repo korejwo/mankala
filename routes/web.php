@@ -32,6 +32,7 @@ Route::get('/', [AuthController::class, 'dashboard'])->name('dashboard');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/games', [GameController::class, 'showAll']);
+Route::get('game', [GameController::class, 'game'])->name('game');
 
 Route::get('api/game/{id}', [ApiGameController::class, 'get']);
 Route::post('api/game/{id}', [ApiGameController::class, 'update']);
