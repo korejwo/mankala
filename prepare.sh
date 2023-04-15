@@ -10,6 +10,12 @@ if [ ! -d "vendor" ]; then
   composer dump-autoload
 fi
 
+if [ ! -d "socket/node_modules" ]; then
+  cd socket
+  npm install
+  cd ..
+fi
+
 chmod 764 bin/chat-server.php
 
 if [ -d "/home/michal" ]; then
@@ -25,7 +31,7 @@ if [ -d "/home/michal" ]; then
       sudo nginx -s reload
       sudo /etc/init.d/nginx restart
   fi
-elif [ -d "/root/dzib" ]; then
+elif [ -d "/root/mankala" ]; then
   nginx -s reload
   /etc/init.d/nginx restart
 fi

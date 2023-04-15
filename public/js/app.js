@@ -11,7 +11,15 @@ function connect (host) {
     console.log(socket);
 }
 
-// connect('http://192.168.0.126:8080');
+connect('http://mankala.local:8080');
+
+function restartSocketServer() {
+    if (!connected || !socket) {
+        return;
+    }
+
+    socket.emit('restart');
+}
 
 // $(document).ready(function () {
 //     $('#setName').on('click', function () {

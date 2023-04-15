@@ -87,6 +87,13 @@ for (let i = 0; i < 6; i++) {
                     }
                 )
             );
+            rock.on('moving', function() {
+                if (!connected || !socket) {
+                    return;
+                }
+
+                socket.emit('moving', 1);
+            });
             canvas.add(rock);
             rocks.push(rock);
         }
