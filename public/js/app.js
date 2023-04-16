@@ -9,6 +9,10 @@ function connect (host) {
     socket = io.connect(host);
     connected = true;
     console.log(socket);
+
+    socket.on('rockInit', function (data) {
+        console.log(data);
+    });
 }
 
 connect('http://mankala.local:8080');

@@ -16,11 +16,22 @@ const io = socket(server, {
     allowEIO3: true
 });
 
+const sockets = {};
+
 io.on('connection', socket => {
     console.log('connection', socket.id);
+    sockets[socket.id] = socket;
+    // console.log(sockets);
 
     socket.on('moving', data => {
         console.log('moving', data);
+        for (const loopSocket in sockets) {
+            if (loopSocket === socket.id) {
+                continue;
+            }
+
+            console.log(loopSocket);
+        }
     });
 
     socket.on('restart', data => {
@@ -29,5 +40,6 @@ io.on('connection', socket => {
 
     socket.on('disconnect', (event) => {
         console.log('disconnect', socket.id);
+        delete sockets[socket.id];
     });
 });
