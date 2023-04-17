@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Route::get('/', function () {
-//    $finished = DB::select('SELECT * FROM games WHERE finished = ?', [1]);
-//    $opened = DB::select('SELECT * FROM games WHERE finished = ?', [0]);
+//    $finished = DB::select('SELECT * FROM games WHERE status = ?', [1]);
+//    $opened = DB::select('SELECT * FROM games WHERE status = ?', [0]);
 //
 //    return view('welcome', ['finished' => $finished, 'opened' => $opened]);
 //});
@@ -32,7 +32,7 @@ Route::get('/', [AuthController::class, 'dashboard'])->name('dashboard');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/games', [GameController::class, 'showAll']);
-Route::get('game', [GameController::class, 'game'])->name('game');
+Route::get('game/{id?}', [GameController::class, 'game'])->name('game')->whereNumber('id');
 
 Route::get('api/game/{id}', [ApiGameController::class, 'get']);
 Route::post('api/game/{id}', [ApiGameController::class, 'update']);

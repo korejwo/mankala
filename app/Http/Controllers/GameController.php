@@ -6,6 +6,21 @@ use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Database\Eloquent\Builder;
+
+enum Status
+{
+    case New;
+    case Finished;
+
+    public function value(): int
+    {
+        return match($this) {
+            Status::New => 0,
+            Status::Finished => 1,
+        };
+    }
+}
 
 class GameController extends Controller
 {
@@ -17,6 +32,7 @@ class GameController extends Controller
 
         return parent::callAction($method, $parameters);
     }
+
     public function showAll(): View
     {
         /** @var Game[] $games */
@@ -24,14 +40,14 @@ class GameController extends Controller
 //        dump($games);
 //        dump($games->toArray());
         $finished = array_values(array_filter($games->toArray(), function ($game) {
-            return $game['finished'];
+            return $game['status'] == Status::Finished;
         }));
 //        dump($finished);
 
         $opened = [];
 
         foreach ($games as $game) {
-            if ($game->finished) {
+            if ($game->status == Status::New) {
                 continue;
             }
 
@@ -46,8 +62,32 @@ class GameController extends Controller
         ]);
     }
 
-    public function game(): View
+    public function game(int $id = null): View
     {
-        return view('game');
+        dump($id);
+//        $game = Game::firstWhere('id', $id);
+        $game = Game::find($id);
+//        $game = Game::where('id', '=', $id)->get();
+//        dump($game);
+//        dump(count($game));
+//        dump(empty($game));
+
+        if (empty($game)) {
+            dump('empty');
+            dump(Auth::id());
+            $data = [
+                'status' => Status::Finished,
+                'user_id' => Auth::id(),
+            ];
+            dump($data);
+//            exit;
+            Game::create($data);
+        } else {
+            dump($game);
+            dump($game->user);
+        }
+
+        return view('game', [
+        ]);
     }
 }

@@ -18,6 +18,8 @@
 
 @section('scripts')
     <script src="{{ cdn_link('fabric.min.js') }}"></script>
+    <script src="{{ cdn_link('pako.js') }}"></script>
+    <script src="{{ asset('js/zlib.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/game.js') }}"></script>
 @endsection

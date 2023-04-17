@@ -120,6 +120,12 @@ function generateRocks() {
 drawBoard();
 generateRocks();
 
+// const test = { my: 'super', puper: [456, 567], awesome: 'pako' };
+// const compressed = obj2zlib(test);
+// console.log(compressed);
+// const restored = zlib2obj(compressed);
+// console.log(restored);
+
 function recreateRocks() {
 
 }

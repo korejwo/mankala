@@ -17,6 +17,19 @@ class Game extends Model
     public $timestamps = false;
 //    protected $dateFormat = 'U';
 
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($model) {
+            $model->status = $model->status->value();
+        });
+    }
+
+    public function user() {
+        return $this->belongsTo('App\Models\User');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,5 +37,7 @@ class Game extends Model
      */
     protected $fillable = [
         'name',
+        'status',
+        'user_id',
     ];
 }
