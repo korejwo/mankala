@@ -16,36 +16,12 @@ const io = socket(server, {
     allowEIO3: true
 });
 
-const sockets = {};
-
 io.on('connection', socket => {
-    // https://socket.io/docs/v4/emit-cheatsheet/
-    console.log('connection', socket.id);
-    socket.join('game_room');
-    sockets[socket.id] = socket;
-    // console.log(sockets);
-
     socket.on('moving', data => {
-        // console.log('moving', data);
         socket.broadcast.emit('rockMove', data);
-        socket.to('game_room').emit('rockMove', data);
-
-        // for (const loopSocket in sockets) {
-        //     if (loopSocket === socket.id) {
-        //         continue;
-        //     }
-        //
-        //     // console.log(loopSocket);
-        //     io.to(loopSocket).emit('rockMove', data);
-        // }
     });
 
-    socket.on('restart', data => {
+    socket.on('restart', () => {
         process.exit(1);
-    });
-
-    socket.on('disconnect', (event) => {
-        console.log('disconnect', socket.id);
-        delete sockets[socket.id];
     });
 });
