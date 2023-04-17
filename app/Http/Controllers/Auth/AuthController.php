@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Game;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -68,11 +69,15 @@ class AuthController extends Controller
      */
     public function dashboard()
     {
-        if (Auth::check()) {
-            return view('auth.dashboard');
+        if (!Auth::check()) {
+            return redirect('login')->withSuccess('You do not have access.');
         }
 
-        return redirect('login')->withSuccess('You do not have access.');
+        $userGames = Game::where('user_id', Auth::id())->get();
+
+        return view('auth.dashboard', [
+            'games' => $userGames,
+        ]);
     }
 
     /**

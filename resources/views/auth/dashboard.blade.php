@@ -22,12 +22,7 @@
                     <tr>
                         <th class="py-4 px-6">
                             <a class="btn text-secondary p-0 d-inline-flex align-items-center" href="#">
-                                <span class="me-2">Date</span>
-                            </a>
-                        </th>
-                        <th class="py-4 px-6">
-                            <a class="btn text-secondary p-0 d-inline-flex align-items-center" href="#">
-                                <span class="me-2">Description</span>
+                                <span class="me-2">Name</span>
                             </a>
                         </th>
                         <th class="py-4 px-6">
@@ -37,20 +32,32 @@
                         </th>
                         <th class="py-4 px-6">
                             <a class="btn text-secondary p-0 d-inline-flex align-items-center" href="#">
-                                <span class="me-2">Descriptions</span>
+                                <span class="me-2">Created</span>
                             </a>
+                        </th>
+                        <th class="py-4 px-6">
+                            <span class="text-secondary p-0 me-2">Action</span>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td class="py-5 px-6">08.04.2021</td>
-                        <td class="py-5 px-6">Code 5928MD01</td>
-                        <td class="py-5 px-6">
-                            <span class="badge bg-success">Completed</span>
-                        </td>
-                        <td class="py-5 px-6">$2500.00</td>
-                    </tr>
+                    @foreach ($games as $game)
+                        <tr>
+                            <td class="py-5 px-6">{{ $game->name }}</td>
+                            <td class="py-5 px-6">
+                                <span class="badge bg-success">{{ $game->statusName() }}</span>
+                            </td>
+                            <td class="py-5 px-6">{{ $game->created_at }}</td>
+                            @if (!$game->status)
+                                <td class="py-5 px-6">
+                                    <a class="btn btn-sm btn-success d-inline-flex align-items-center"
+                                       href="{{ route('game', ['id' => 1]) }}">
+                                        <span>Continue</span>
+                                    </a>
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

@@ -22,12 +22,23 @@ class Game extends Model
         parent::boot();
 
         self::creating(function ($model) {
-            $model->status = $model->status->value();
+            if (empty($model->name)) {
+                $model->name = $model->user->name . "'s game";
+            }
+
+//            $model->status = $model->status->value();
         });
     }
 
     public function user() {
         return $this->belongsTo('App\Models\User');
+    }
+
+    public function statusName(): string {
+        return match($this->status) {
+            0 => 'In progress',
+            1 => 'Finished',
+        };
     }
 
     /**

@@ -2,25 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Status;
 use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Database\Eloquent\Builder;
-
-enum Status
-{
-    case New;
-    case Finished;
-
-    public function value(): int
-    {
-        return match($this) {
-            Status::New => 0,
-            Status::Finished => 1,
-        };
-    }
-}
 
 class GameController extends Controller
 {
@@ -62,9 +49,8 @@ class GameController extends Controller
         ]);
     }
 
-    public function game(int $id = null): View
+    public function game(int $id = null)
     {
-        dump($id);
 //        $game = Game::firstWhere('id', $id);
         $game = Game::find($id);
 //        $game = Game::where('id', '=', $id)->get();
@@ -72,17 +58,21 @@ class GameController extends Controller
 //        dump(count($game));
 //        dump(empty($game));
 
-        if (empty($game)) {
+        if (!$id) {
             dump('empty');
             dump(Auth::id());
             $data = [
-                'status' => Status::Finished,
+                'status' => Status::New,
                 'user_id' => Auth::id(),
             ];
             dump($data);
 //            exit;
             Game::create($data);
+        } elseif (empty($game)) {
+            return redirect('');
+            exit;
         } else {
+            dump($id);
             dump($game);
             dump($game->user);
         }
