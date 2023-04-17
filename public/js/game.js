@@ -1,4 +1,5 @@
 const canvas = new fabric.Canvas('game');
+canvas.selection = false;
 const defaultValues = {
     fill: 'transparent',
     radius: 60,
@@ -140,6 +141,22 @@ function recreateRocks() {
         rock.on('moving', function(event) {
             if (!connected || !socket) {
                 return;
+            }
+
+            if (rock.get('left') < 0) {
+                rock.set('left', 0);
+            }
+
+            if (rock.get('top') < 0) {
+                rock.set('top', 0);
+            }
+
+            if (rock.get('left') + rock.get('width') > canvas.getWidth()) {
+                rock.set('left', canvas.getWidth() - rock.get('width'));
+            }
+
+            if (rock.get('top') + rock.get('height') > canvas.getHeight()) {
+                rock.set('top', canvas.getHeight() - rock.get('height'));
             }
 
             const data = {id: rock.id, x: rock.left, y: rock.top};

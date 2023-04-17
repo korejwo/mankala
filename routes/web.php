@@ -33,6 +33,7 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/games', [GameController::class, 'showAll']);
 Route::get('game/{id?}', [GameController::class, 'game'])->name('game')->whereNumber('id');
+Route::get('game-rocks/{id}', [GameController::class, 'reRock'])->name('reRock')->whereNumber('id');
 
 Route::get('api/game/{id}', [ApiGameController::class, 'get'])->name('api.get');
 Route::post('api/game/{id}', [ApiGameController::class, 'update'])->name('api.update');

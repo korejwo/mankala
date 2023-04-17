@@ -32,6 +32,9 @@ if [ -d "/home/michal" ]; then
       sudo /etc/init.d/nginx restart
   fi
 elif [ -d "/root/mankala" ]; then
-  nginx -s reload
-  /etc/init.d/nginx restart
+  if [ ! -f "/etc/nginx/sites-enabled/mankala" ]; then
+    ln -s /root/mankala/nginx_dev.conf /etc/nginx/sites-enabled/mankala
+    nginx -s reload
+    /etc/init.d/nginx restart
+  fi
 fi

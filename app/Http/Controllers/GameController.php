@@ -62,47 +62,20 @@ class GameController extends Controller
      */
     public function game(int $id = null): View|Factory|Redirector|RedirectResponse|Application
     {
-//        $game = Game::firstWhere('id', $id);
         $game = Game::find($id);
-//        $game = Game::where('id', '=', $id)->get();
-//        dump($game);
-//        dump(count($game));
-//        dump(empty($game));
 
         if (!$id) {
-//            dump('empty');
-//            dump(Auth::id());
-            $items = [];
-
-            for ($i = 0; $i < 6; $i++) {
-                for ($j = 0; $j < 2; $j++) {
-                    for ($k = 0; $k < 4; $k++) {
-                        $item = [
-                            'color' => Color::cases()[array_rand(Color::cases())]->value,
-                            'x' => 130 + $i * 90,
-                            'y' => 60 + $j * 120,
-                        ];
-                        $items[] = $item;
-                    }
-                }
-            }
             $data = [
                 'status' => Status::New,
                 'user_id' => Auth::id(),
                 'token' => $this->generateRandomString(),
-                'data' => json_encode($items),
+                'data' => json_encode($this->generateItems()),
             ];
-//            dump($data);
-//            exit;
             $game = Game::create($data);
-//            dump($game->id);
-//            exit;
+
             return redirect()->route('game', ['id' => $game->id]);
         } elseif (empty($game)) {
             return redirect('');
-//        } else {
-//            dump($id);
-//            dump($game);
         }
 
         return view('game', [
@@ -110,6 +83,47 @@ class GameController extends Controller
             'token' => $game->token,
             'id' => $game->id,
         ]);
+    }
+
+    /**
+     * @param int $id
+     * @return View|Factory|Redirector|RedirectResponse|Application
+     */
+    public function reRock(int $id): View|Factory|Redirector|RedirectResponse|Application
+    {
+        $game = Game::find($id);
+
+        if (empty($game)) {
+            return redirect('');
+        }
+
+        $game->data = json_encode($this->generateItems());
+        $game->save();
+
+        return redirect()->route('game', ['id' => $game->id]);
+    }
+
+    /**
+     * @return array
+     */
+    private function generateItems(): array
+    {
+        $items = [];
+
+        for ($i = 0; $i < 6; $i++) {
+            for ($j = 0; $j < 2; $j++) {
+                for ($k = 0; $k < 4; $k++) {
+                    $item = [
+                        'color' => Color::cases()[array_rand(Color::cases())]->value,
+                        'x' => 142 + $i * 90 + (($k % 2) * 20),
+                        'y' => 72 + $j * 120 + (floor($k / 2) * 20),
+                    ];
+                    $items[] = $item;
+                }
+            }
+        }
+
+        return $items;
     }
 
     /**

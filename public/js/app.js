@@ -2,16 +2,16 @@ let socket = null;
 let connected = false;
 
 function connect (host) {
-    if (socket) {
-        return;
-    }
-
     socket = io.connect(host);
-    connected = true;
 
+    socket.on('connect', () => {
+        connected = true;
+    });
+    socket.on('disconnect', () => {
+        connected = false;
+    });
     socket.on('rockMove', function (data) {
-        rocks[data.id].left = data.x;
-        rocks[data.id].top = data.y;
+        rocks[data.id].set({left: data.x, top: data.y});
         rocks[data.id].setCoords();
         canvas.renderAll();
     });
