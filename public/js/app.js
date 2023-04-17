@@ -8,10 +8,12 @@ function connect (host) {
 
     socket = io.connect(host);
     connected = true;
-    console.log(socket);
 
-    socket.on('rockInit', function (data) {
-        console.log(data);
+    socket.on('rockMove', function (data) {
+        rocks[data.id].left = data.x;
+        rocks[data.id].top = data.y;
+        rocks[data.id].setCoords();
+        canvas.renderAll();
     });
 }
 
@@ -24,10 +26,3 @@ function restartSocketServer() {
 
     socket.emit('restart');
 }
-
-// $(document).ready(function () {
-//     $('#setName').on('click', function () {
-//         console.log(socket);
-//         socket.emit('setName', $('[name=name]').val());
-//     });
-// });

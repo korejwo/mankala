@@ -142,9 +142,6 @@ function recreateRocks() {
                 // return;
             }
 
-            // console.log(rock);
-            // rock.left -= 100;
-            // rock.setCoords();
             // socket.emit('moving', rocks.length);
         });
         rock.on('moving', function(event) {
@@ -152,8 +149,7 @@ function recreateRocks() {
                 return;
             }
 
-            const data = Object.assign({id: rock.id}, event.pointer);
-            // console.log(data);
+            const data = {id: rock.id, x: rock.left, y: rock.top};
             socket.emit('moving', data);
         });
         canvas.add(rock);

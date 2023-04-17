@@ -20,17 +20,19 @@ const sockets = {};
 
 io.on('connection', socket => {
     console.log('connection', socket.id);
+    socket.join('game_room');
     sockets[socket.id] = socket;
     // console.log(sockets);
 
     socket.on('moving', data => {
-        console.log('moving', data);
+        // console.log('moving', data);
         for (const loopSocket in sockets) {
             if (loopSocket === socket.id) {
                 continue;
             }
 
-            console.log(loopSocket);
+            // console.log(loopSocket);
+            socket.broadcast.emit('rockMove', data);
         }
     });
 
