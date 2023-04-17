@@ -49,6 +49,7 @@ class Game extends Model
     protected $fillable = [
         'name',
         'status',
+        'token',
         'user_id',
         'data',
     ];

@@ -127,8 +127,8 @@ function recreateRocks() {
                     radius: 8,
                     startAngle: 0,
                     endAngle: 360,
-                    left: 130 + items[item].x * 90,
-                    top: 60 + items[item].y * 120,
+                    left: items[item].x,
+                    top: items[item].y,
                     selectable: true,
                     hoverCursor: 'pointer',
                     moveCursor: 'pointer',
@@ -137,13 +137,6 @@ function recreateRocks() {
             )
         );
         rock.id = parseInt(item);
-        rock.on('selected', function(event) {
-            if (!connected || !socket) {
-                // return;
-            }
-
-            // socket.emit('moving', rocks.length);
-        });
         rock.on('moving', function(event) {
             if (!connected || !socket) {
                 return;
@@ -152,10 +145,21 @@ function recreateRocks() {
             const data = {id: rock.id, x: rock.left, y: rock.top};
             socket.emit('moving', data);
         });
+        rock.on('modified', () => {
+            $.ajax({data: {id: rock.id, x: rock.left, y: rock.top}});
+        });
         canvas.add(rock);
         rocks.push(rock);
     }
 }
+
+$.ajaxSetup({
+    url: apiUpdate,
+    type: 'POST',
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+});
 
 drawBoard();
 // generateRocks();

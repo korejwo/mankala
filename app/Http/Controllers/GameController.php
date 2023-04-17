@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use App\Enums\Color;
 use App\Enums\Status;
 use App\Models\Game;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,7 +55,12 @@ class GameController extends Controller
         ]);
     }
 
-    public function game(int $id = null)
+    /**
+     * @param int|null $id
+     * @return View|Factory|Redirector|RedirectResponse|Application
+     * @throws Exception
+     */
+    public function game(int $id = null): View|Factory|Redirector|RedirectResponse|Application
     {
 //        $game = Game::firstWhere('id', $id);
         $game = Game::find($id);
@@ -69,8 +79,8 @@ class GameController extends Controller
                     for ($k = 0; $k < 4; $k++) {
                         $item = [
                             'color' => Color::cases()[array_rand(Color::cases())]->value,
-                            'x' => $i,
-                            'y' => $j,
+                            'x' => 130 + $i * 90,
+                            'y' => 60 + $j * 120,
                         ];
                         $items[] = $item;
                     }
@@ -79,6 +89,7 @@ class GameController extends Controller
             $data = [
                 'status' => Status::New,
                 'user_id' => Auth::id(),
+                'token' => $this->generateRandomString(),
                 'data' => json_encode($items),
             ];
 //            dump($data);
@@ -89,7 +100,6 @@ class GameController extends Controller
             return redirect()->route('game', ['id' => $game->id]);
         } elseif (empty($game)) {
             return redirect('');
-            exit;
 //        } else {
 //            dump($id);
 //            dump($game);
@@ -97,6 +107,26 @@ class GameController extends Controller
 
         return view('game', [
             'data' => $game->data,
+            'token' => $game->token,
+            'id' => $game->id,
         ]);
+    }
+
+    /**
+     * @param int $length
+     * @return string
+     * @throws Exception
+     */
+    private function generateRandomString(int $length = 16): string
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        }
+
+        return $randomString;
     }
 }
