@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Color;
 use App\Enums\Status;
 use App\Models\Game;
 use Illuminate\Http\Request;
@@ -59,25 +60,43 @@ class GameController extends Controller
 //        dump(empty($game));
 
         if (!$id) {
-            dump('empty');
-            dump(Auth::id());
+//            dump('empty');
+//            dump(Auth::id());
+            $items = [];
+
+            for ($i = 0; $i < 6; $i++) {
+                for ($j = 0; $j < 2; $j++) {
+                    for ($k = 0; $k < 4; $k++) {
+                        $item = [
+                            'color' => Color::cases()[array_rand(Color::cases())]->value,
+                            'x' => $i,
+                            'y' => $j,
+                        ];
+                        $items[] = $item;
+                    }
+                }
+            }
             $data = [
                 'status' => Status::New,
                 'user_id' => Auth::id(),
+                'data' => json_encode($items),
             ];
-            dump($data);
+//            dump($data);
 //            exit;
-            Game::create($data);
+            $game = Game::create($data);
+//            dump($game->id);
+//            exit;
+            return redirect()->route('game', ['id' => $game->id]);
         } elseif (empty($game)) {
             return redirect('');
             exit;
-        } else {
-            dump($id);
-            dump($game);
-            dump($game->user);
+//        } else {
+//            dump($id);
+//            dump($game);
         }
 
         return view('game', [
+            'data' => $game->data,
         ]);
     }
 }

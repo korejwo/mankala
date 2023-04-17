@@ -117,8 +117,53 @@ function generateRocks() {
     }
 }
 
+function recreateRocks() {
+    for (const item in items) {
+        const rock = new fabric.Circle(
+            Object.assign(
+                defaultValues,
+                {
+                    fill: items[item].color,
+                    radius: 8,
+                    startAngle: 0,
+                    endAngle: 360,
+                    left: 130 + items[item].x * 90,
+                    top: 60 + items[item].y * 120,
+                    selectable: true,
+                    hoverCursor: 'pointer',
+                    moveCursor: 'pointer',
+                    hasControls: false,
+                }
+            )
+        );
+        rock.id = parseInt(item);
+        rock.on('selected', function(event) {
+            if (!connected || !socket) {
+                // return;
+            }
+
+            // console.log(rock);
+            // rock.left -= 100;
+            // rock.setCoords();
+            // socket.emit('moving', rocks.length);
+        });
+        rock.on('moving', function(event) {
+            if (!connected || !socket) {
+                return;
+            }
+
+            const data = Object.assign({id: rock.id}, event.pointer);
+            // console.log(data);
+            socket.emit('moving', data);
+        });
+        canvas.add(rock);
+        rocks.push(rock);
+    }
+}
+
 drawBoard();
-generateRocks();
+// generateRocks();
+recreateRocks();
 
 // const test = { my: 'super', puper: [456, 567], awesome: 'pako' };
 // const compressed = obj2zlib(test);
@@ -126,6 +171,3 @@ generateRocks();
 // const restored = zlib2obj(compressed);
 // console.log(restored);
 
-function recreateRocks() {
-
-}

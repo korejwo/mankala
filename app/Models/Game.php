@@ -50,5 +50,6 @@ class Game extends Model
         'name',
         'status',
         'user_id',
+        'data',
     ];
 }

@@ -17,6 +17,9 @@
 @endsection
 
 @section('scripts')
+    <script type="text/javascript">
+        const items = JSON.parse('{!! $data !!}');
+    </script>
     <script src="{{ cdn_link('fabric.min.js') }}"></script>
     <script src="{{ cdn_link('pako.js') }}"></script>
     <script src="{{ asset('js/zlib.js') }}"></script>
