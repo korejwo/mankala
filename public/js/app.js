@@ -17,7 +17,7 @@ function connect (host) {
     });
 }
 
-connect('http://mankala.local:8080');
+connect(window.location.origin + ':8080');
 
 function restartSocketServer() {
     if (!connected || !socket) {

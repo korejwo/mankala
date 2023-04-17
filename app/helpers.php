@@ -20,7 +20,7 @@ if (!function_exists('cdn_link')) {
                 $version = time();
             }
         } else {
-            $link = $links[3];
+            $link = $links[3] . 'global/';
         }
 
         return $link . $file . ($version ? '?v=' . $version : '');

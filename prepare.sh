@@ -17,6 +17,7 @@ if [ ! -d "socket/node_modules" ]; then
 fi
 
 chmod 764 bin/chat-server.php
+cp .env.example .env
 
 if [ -d "/home/michal" ]; then
   sudo chown -R :phpusers /home/michal/www/mankala/storage
@@ -32,8 +33,11 @@ if [ -d "/home/michal" ]; then
       sudo /etc/init.d/nginx restart
   fi
 elif [ -d "/root/mankala" ]; then
+  chmod -R 757 /root/mankala/storage
+  chmod -R 757 /root/mankala/bootstrap/cache
+
   if [ ! -f "/etc/nginx/sites-enabled/mankala" ]; then
-    ln -s /root/mankala/nginx_dev.conf /etc/nginx/sites-enabled/mankala
+    ln -s /root/mankala/nginx_prod.conf /etc/nginx/sites-enabled/mankala
     nginx -s reload
     /etc/init.d/nginx restart
   fi

@@ -1,4 +1,14 @@
-const server = require('http').createServer();
+const fs = require('fs');
+let server;
+
+if (__dirname.indexOf('/root/mankala') > -1) {
+    server = require('https').createServer({
+        key: fs.readFileSync('/etc/letsencrypt/live/mankala.michal.es/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/mankala.michal.es/cert.pem')
+    });
+} else {
+    server = require('http').createServer();
+}
 const socket = require('socket.io');
 const process = require('process');
 const port = 8080;
@@ -9,7 +19,7 @@ server.listen(port, function () {
 const io = socket(server, {
     cors: {
         credentials: true,
-        origin: ['http://192.168.0.126', 'http://192.168.0.120:8080', 'http://145.239.93.29', 'http://michal.es', 'http://mankala.local'],
+        origin: ['https://mankala.michal.es', 'http://mankala.local'],
         methods: ['GET', 'POST'],
         transports: ['websocket', 'polling'],
     },
