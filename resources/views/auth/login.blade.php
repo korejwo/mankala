@@ -5,6 +5,16 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
+                    @if (session('danger'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('danger') }}
+                        </div>
+                    @endif
+                    @if (session('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     <div class="card">
                         <div class="card-header">Login</div>
                         <div class="card-body">
@@ -35,7 +45,7 @@
                                     <div class="col-md-6 offset-md-4">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="remember"> Remember Me
+                                                <input type="checkbox" name="remember" value="1"> Remember Me
                                             </label>
                                         </div>
                                     </div>

@@ -1,12 +1,12 @@
 @extends('layout')
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-    @endif
     <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="bg-white rounded shadow">
             <div class="px-6 pt-6 border-bottom border-secondary-light">
                 <div class="d-flex mb-6 align-items-center justify-content-between">

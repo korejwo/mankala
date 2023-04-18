@@ -17,14 +17,25 @@ if [ ! -d "socket/node_modules" ]; then
 fi
 
 chmod 764 bin/chat-server.php
-cp .env.example .env
+
+if [ ! -f ".env" ]; then
+  cp .env.example .env
+  nano .env
+  php artisan key:generate
+  echo "Enter MySQL root password for database creation"
+  mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS mankala"
+  echo "Enter MySQL root password for schema import"
+  mysql -u root -p mankala < schema.sql
+fi
 
 if [ -d "/home/michal" ]; then
-  sudo chown -R :phpusers /home/michal/www/mankala/storage
-  sudo chown -R :phpusers /home/michal/www/mankala/bootstrap/cache
+#  sudo chown -R :phpusers /home/michal/www/mankala/storage
+#  sudo chown -R :phpusers /home/michal/www/mankala/bootstrap/cache
+  sudo chmod -R 757 /home/michal/www/mankala/storage
+  sudo chmod -R 757 /home/michal/www/mankala/bootstrap/cache
 
   if [ ! -d "public/cdn" ]; then
-      ln -s /home/michal/www/static/global public/cdn
+      ln -s /home/michal/www/static/global /home/michal/www/mankala/public/cdn
   fi
 
   if [ ! -f "/etc/nginx/sites-enabled/mankala" ]; then

@@ -39,12 +39,13 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
+        $remember = $request->get('remember');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, !!$remember)) {
             return redirect()->intended('')->withSuccess('You have successfully logged in.');
         }
 
-        return redirect('login')->withSuccess('You have entered invalid credentials.');
+        return redirect('login')->withDanger('You have entered invalid credentials.');
     }
 
     /**
@@ -59,7 +60,12 @@ class AuthController extends Controller
         ]);
 
         $data = $request->all();
-        $check = $this->create($data);
+        $remember = $request->get('remember');
+        $user = $this->create($data);
+
+        if ($user) {
+            Auth::login($user, !!$remember);
+        }
 
         return redirect('')->withSuccess('You have successfully registered.');
     }
@@ -70,7 +76,7 @@ class AuthController extends Controller
     public function dashboard()
     {
         if (!Auth::check()) {
-            return redirect('login')->withSuccess('You do not have access.');
+            return redirect('login')->withDanger('You need to login first.');
         }
 
         $userGames = Game::where('user_id', Auth::id())->get();
@@ -100,6 +106,6 @@ class AuthController extends Controller
         Session::flush();
         Auth::logout();
 
-        return redirect('login');
+        return redirect('login')->withSuccess('You have successfully logged out.');
     }
 }

@@ -20,7 +20,7 @@ class GameController extends Controller
     public function callAction($method, $parameters)
     {
         if (!Auth::check()) {
-            return redirect('login');
+            return redirect('login')->withDanger('You need to login first.');
         }
 
         return parent::callAction($method, $parameters);
