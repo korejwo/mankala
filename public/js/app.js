@@ -17,7 +17,7 @@ function connect (host) {
     });
 }
 
-connect(window.location.origin + ':8080');
+connect('https://mankala.michal.es:8080');
 
 function restartSocketServer() {
     if (!connected || !socket) {
